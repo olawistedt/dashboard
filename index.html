@@ -1,102 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Dashboard</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .dashboard {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            position: relative;
-        }
-        .dashboard h1 {
-            margin-top: 0;
-            color: #333;
-        }
-        .dashboard a {
-            color: #0078d7;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .favicon {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 200px; /* Set size for favicon */
-            height: 200px; /* Set size for favicon */
-        }
-        #links {
-            margin-top: 20px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #005bb5;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Dashboard</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .dashboard {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+    .dashboard h1 {
+      margin-top: 0;
+      color: #333;
+    }
+    .dashboard a {
+      color: #0078d7;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .favicon {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 200px;
+      height: 200px;
+    }
+    #links {
+      margin-top: 20px;
+    }
+    .link-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005bb5;
+    }
+    .remove-button {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+    .remove-button:hover {
+      background-color: darkred;
+    }
+  </style>
 </head>
 <body>
-    <img src="favicon.png" alt="Favicon" class="favicon">
-    <div class="dashboard">
-        <h1>Dashboard</h1>
-        <a href="https://copilot.microsoft.com/">Chat with Copilot</a>
-        <br>
-        <button onclick="addLink()">Add a new link to dashboard</button>
-        <div id="links"></div>
-    </div>
-    <script>
-        function addLink() {
-            var name = prompt("Name your link:");
-            var url = prompt("Specify your link (with https:// etc):");
-            if (name && url) {
-                saveLink(name, url);
-                displayLinks();
-            }
-        }
-
-        function saveLink(name, url) {
-            let links = JSON.parse(localStorage.getItem('links')) || [];
-            links.push({ name: name, url: url });
-            localStorage.setItem('links', JSON.stringify(links));
-        }
-
-        function displayLinks() {
-            let links = JSON.parse(localStorage.getItem('links')) || [];
-            let linksDiv = document.getElementById('links');
-            linksDiv.innerHTML = '';
-            links.forEach(link => {
-                var a = document.createElement('a');
-                a.href = link.url;
-                a.textContent = link.name;
-                a.target = "_blank";
-                a.style.display = "block";
-                linksDiv.appendChild(a);
-            });
-        }
-
-        // Display links on page load
+  <img src="favicon.png" alt="Favicon" class="favicon">
+  <div class="dashboard">
+    <h1>Dashboard</h1>
+    <a href="https://copilot.microsoft.com/">Chat with Copilot</a>
+    <br>
+    <button onclick="addLink()">Add a new link to dashboard</button>
+    <div id="links"></div>
+  </div>
+  <script>
+    function addLink() {
+      var name = prompt("Name your link:");
+      var url = prompt("Specify your link (with https:// etc):");
+      if (name && url) {
+        saveLink(name, url);
         displayLinks();
-    </script>
+      }
+    }
+
+    function saveLink(name, url) {
+      let links = JSON.parse(localStorage.getItem('links')) || [];
+      links.push({ name: name, url: url });
+      localStorage.setItem('links', JSON.stringify(links));
+    }
+
+    function removeLink(index) {
+      let links = JSON.parse(localStorage.getItem('links')) || [];
+      links.splice(index, 1);
+      localStorage.setItem('links', JSON.stringify(links));
+      displayLinks();
+    }
+
+    function displayLinks() {
+      let links = JSON.parse(localStorage.getItem('links')) || [];
+      let linksDiv = document.getElementById('links');
+      linksDiv.innerHTML = '';
+      links.forEach((link, index) => {
+        var linkContainer = document.createElement('div');
+        linkContainer.className = 'link-container';
+
+        var a = document.createElement('a');
+        a.href = link.url;
+        a.textContent = link.name;
+        a.target = "_blank";
+
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.className = 'remove-button';
+        removeButton.onclick = function() {
+          removeLink(index);
+        };
+
+        linkContainer.appendChild(a);
+        linkContainer.appendChild(removeButton);
+        linksDiv.appendChild(linkContainer);
+      });
+    }
+
+    // Display links on page load
+    displayLinks();
+  </script>
 </body>
 </html>
