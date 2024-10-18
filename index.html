@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome Dashboard</title>
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,44 +15,68 @@
             height: 100vh;
             margin: 0;
         }
-
         .dashboard {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            position: relative;
         }
-
         .dashboard h1 {
             margin-top: 0;
             color: #333;
         }
-
         .dashboard a {
             color: #0078d7;
             text-decoration: none;
             font-weight: bold;
         }
-
         .favicon {
             position: absolute;
             top: 10px;
             left: 10px;
-            width: 200px;
-            height: 200px;
+            width: 200px; /* Smaller size for favicon */
+            height: 200px; /* Smaller size for favicon */
+        }
+        #links {
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005bb5;
         }
     </style>
-    <link rel="icon" href="favicon.png" type="image/png">
 </head>
-
 <body>
+  <img src="favicon.png" alt="Favicon" class="favicon">
     <div class="dashboard">
-        <img src="favicon.png" alt="Favicon" class="favicon">
         <h1>Welcome to Your Dashboard</h1>
         <p>Click the link below to start chatting with Copilot:</p>
         <a href="https://copilot.microsoft.com/">Start Chatting</a>
+        <button onclick="addLink()">Add Link</button>
+        <div id="links"></div>
     </div>
+    <script>
+        function addLink() {
+            var url = prompt("Please enter the URL:");
+            if (url) {
+                var a = document.createElement('a');
+                a.href = url;
+                a.textContent = url;
+                a.target = "_blank";
+                a.style.display = "block";
+                document.getElementById('links').appendChild(a);
+            }
+        }
+    </script>
 </body>
-
 </html>
