@@ -36,8 +36,8 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            width: 200px; /* Smaller size for favicon */
-            height: 200px; /* Smaller size for favicon */
+            width: 200px; /* Set size for favicon */
+            height: 200px; /* Set size for favicon */
         }
         #links {
             margin-top: 20px;
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-  <img src="favicon.png" alt="Favicon" class="favicon">
+    <img src="favicon.png" alt="Favicon" class="favicon">
     <div class="dashboard">
         <h1>Dashboard</h1>
         <a href="https://copilot.microsoft.com/">Chat with Copilot</a>
@@ -67,16 +67,17 @@
     </div>
     <script>
         function addLink() {
-            var url = prompt("Please enter the URL:");
-            if (url) {
-                saveLink(url);
+            var name = prompt("Name your link:");
+            var url = prompt("Specify your link (with https:// etc):");
+            if (name && url) {
+                saveLink(name, url);
                 displayLinks();
             }
         }
 
-        function saveLink(url) {
+        function saveLink(name, url) {
             let links = JSON.parse(localStorage.getItem('links')) || [];
-            links.push(url);
+            links.push({ name: name, url: url });
             localStorage.setItem('links', JSON.stringify(links));
         }
 
@@ -84,10 +85,10 @@
             let links = JSON.parse(localStorage.getItem('links')) || [];
             let linksDiv = document.getElementById('links');
             linksDiv.innerHTML = '';
-            links.forEach(url => {
+            links.forEach(link => {
                 var a = document.createElement('a');
-                a.href = url;
-                a.textContent = url;
+                a.href = link.url;
+                a.textContent = link.name;
                 a.target = "_blank";
                 a.style.display = "block";
                 linksDiv.appendChild(a);
