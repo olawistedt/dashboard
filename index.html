@@ -59,24 +59,43 @@
 <body>
   <img src="favicon.png" alt="Favicon" class="favicon">
     <div class="dashboard">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>Click the link below to start chatting with Copilot:</p>
-        <a href="https://copilot.microsoft.com/">Start Chatting</a>
-        <button onclick="addLink()">Add Link</button>
+        <h1>Dashboard</h1>
+        <a href="https://copilot.microsoft.com/">Chat with Copilot</a>
+        <br>
+        <button onclick="addLink()">Add a new link to dashboard</button>
         <div id="links"></div>
     </div>
     <script>
         function addLink() {
             var url = prompt("Please enter the URL:");
             if (url) {
+                saveLink(url);
+                displayLinks();
+            }
+        }
+
+        function saveLink(url) {
+            let links = JSON.parse(localStorage.getItem('links')) || [];
+            links.push(url);
+            localStorage.setItem('links', JSON.stringify(links));
+        }
+
+        function displayLinks() {
+            let links = JSON.parse(localStorage.getItem('links')) || [];
+            let linksDiv = document.getElementById('links');
+            linksDiv.innerHTML = '';
+            links.forEach(url => {
                 var a = document.createElement('a');
                 a.href = url;
                 a.textContent = url;
                 a.target = "_blank";
                 a.style.display = "block";
-                document.getElementById('links').appendChild(a);
-            }
+                linksDiv.appendChild(a);
+            });
         }
+
+        // Display links on page load
+        displayLinks();
     </script>
 </body>
 </html>
