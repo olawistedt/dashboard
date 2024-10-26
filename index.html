@@ -3,77 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome Dashboard</title>
-  <link rel="icon" href="favicon.png" type="image/png">
+  <title>Ask Copilot</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #e0e0e0;
+      background-color: #f0f0f0;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
-    .banner {
-      display: flex;
-      align-items: center;
-      background-color: #1e1e1e;
-      width: 100%;
-      padding: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      margin-bottom: 20px;
-      position: fixed;
-      top: 0;
-      z-index: 1;
-    }
-    .banner img {
-      width: 100px;
-      height: 100px;
-      margin-right: 20px;
-    }
-    .banner .text-container {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-    }
-    .banner h1 {
-      margin: 0;
-      font-size: 2em;
-      color: #e0e0e0;
-    }
-    .dashboard {
-      background-color: #1e1e1e;
+    .container {
+      background-color: #fff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      position: relative;
-      top: 150px;
     }
-    .dashboard a {
-      color: #66ccff;
-      text-decoration: none;
-      font-weight: bold;
+    .container h1 {
+      margin-top: 0;
+      color: #333;
     }
-    .dashboard p {
-      margin: 20px 0 10px;
-    }
-    #links {
-      margin-top: 20px;
-    }
-    .link-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      background-color: #333;
+    .container input[type="text"] {
+      width: 80%;
       padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
       border-radius: 5px;
     }
-    button {
-      margin-top: 20px;
+    .container input[type="submit"] {
       padding: 10px 20px;
       background-color: #0078d7;
       color: white;
@@ -81,87 +40,32 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    button:hover {
+    .container input[type="submit"]:hover {
       background-color: #005bb5;
     }
-    .remove-button {
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      padding: 5px 10px;
-    }
-    .remove-button:hover {
-      background-color: darkred;
+    #question {
+      margin-top: 20px;
+      color: #0078d7;
     }
   </style>
 </head>
 <body>
-  <div class="banner">
-    <img src="favicon.png" alt="Logo">
-    <div class="text-container">
-      <h1>Dashboard</h1>
-    </div>
+  <div class="container">
+    <h1>Ask Copilot</h1>
+    <form id="questionForm" action="https://copilot.microsoft.com/" method="get">
+      <input type="text" id="userQuestion" name="question" placeholder="Ask your question here...">
+      <input type="submit" value="Submit">
+    </form>
+    <p id="question"></p>
   </div>
-  <div class="dashboard">
-    <a href="https://copilot.microsoft.com/">Chat with Copilot</a>
-    <br>
-    <p>Add a new link to the dashboard:</p>
-    <button onclick="addLink()">Add</button>
-    <div id="links"></div>
-  </div>
+
   <script>
-    function addLink() {
-      var name = prompt("Name your link:");
-      var url = prompt("Specify your link (with https:// etc):");
-      if (name && url) {
-        saveLink(name, url);
-        displayLinks();
-      }
-    }
-
-    function saveLink(name, url) {
-      let links = JSON.parse(localStorage.getItem('links')) || [];
-      links.push({ name: name, url: url });
-      localStorage.setItem('links', JSON.stringify(links));
-    }
-
-    function removeLink(index) {
-      let links = JSON.parse(localStorage.getItem('links')) || [];
-      links.splice(index, 1);
-      localStorage.setItem('links', JSON.stringify(links));
-      displayLinks();
-    }
-
-    function displayLinks() {
-      let links = JSON.parse(localStorage.getItem('links')) || [];
-      let linksDiv = document.getElementById('links');
-      linksDiv.innerHTML = '';
-      links.forEach((link, index) => {
-        var linkContainer = document.createElement('div');
-        linkContainer.className = 'link-container';
-
-        var a = document.createElement('a');
-        a.href = link.url;
-        a.textContent = link.name;
-        a.target = "_blank";
-
-        var removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.className = 'remove-button';
-        removeButton.onclick = function() {
-          removeLink(index);
-        };
-
-        linkContainer.appendChild(a);
-        linkContainer.appendChild(removeButton);
-        linksDiv.appendChild(linkContainer);
-      });
-    }
-
-    // Display links on page load
-    displayLinks();
+    document.getElementById('questionForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var question = document.getElementById('userQuestion').value;
+      document.getElementById('question').textContent = "You asked: " + question;
+      this.submit(); // Submit the form to the action URL
+    });
   </script>
 </body>
 </html>
